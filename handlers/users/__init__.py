@@ -1,3 +1,4 @@
-from . import help
-from . import start
-from . import echo
+from .promution import dp
+from .poster import dp
+
+__all__ = ["dp"]

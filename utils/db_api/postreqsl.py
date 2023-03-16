@@ -11,7 +11,7 @@ class Database:
         self.pool: Union[Pool, None] = None
 
     async def create(self):
-        self.pool =await asyncpg.create_pool(
+        self.pool = await asyncpg.create_pool(
             user=config.DB_USER,
             password=config.DB_PASS,
             host=config.DB_HOST,
@@ -41,14 +41,14 @@ class Database:
         CREATE TABLE IF NOT EXISTS Users(
         id SERIAL PRIMARY KEY,
         fullname VARCHAR(255) NOT NULL,
-        user_name VARCHAR(255) NULL,
+        username VARCHAR(255) NULL,
         telegram_id BIGINT NOT NULL UNIQUE
         );
         """
         await self.execute(sql, execute=True)
 
     @staticmethod
-    def format_args(sql, parameters:dict):
+    def format_args(sql, parameters: dict):
         sql += " AND ".join([
             f"{item} = ${num}" for num, item in enumerate(parameters.keys(),
                                                           start=1)
@@ -57,7 +57,7 @@ class Database:
 
     async def add_user(self, fullname, username, telegram_id):
         sql = "INSERT INTO Users (fullname, username, telegram_id) VALUES($1, $2, $3)"
-        return await self.execute(sql,fullname,username,telegram_id, fetchrow=True)
+        return await self.execute(sql, fullname, username, telegram_id, fetchrow=True)
 
     async def select_all_users(self):
         sql = "SELECT * FROM Users"
